@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, send_from_directory
 import os
-from router import load_public_routes
+from router import load_public_routes, load_model_routes
 
 def create_app():
     """
@@ -22,8 +22,15 @@ def create_app():
             mimetype="image/vnd.microsoft.icon"
         )
 
-    # Register the public routes
+    # Register the public, and model routes
     load_public_routes(app)
+    load_model_routes(app)
+
+    # Register the SPA application
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def catch_all(path):
+        return send_from_directory(os.path.join(app.root_path, 'build'), 'index.html')
 
     # Return the instance of the app
     return app

@@ -27,3 +27,11 @@ def load_public_routes(app: Flask):
             os.path.join(app.root_path, "build"),
             "resume.pdf"
         )
+
+def load_model_routes(app: Flask):
+    """
+    Function to load all the model related routes
+    """
+    model_routes = Blueprint("models", __name__, static_folder="build/models/", static_url_path="/models/")
+    
+    app.register_blueprint(model_routes)
