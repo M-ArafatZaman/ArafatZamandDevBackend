@@ -1,11 +1,12 @@
 from flask import Flask, jsonify, send_from_directory
 import os
+from router import load_public_routes
 
 def create_app():
     """
     Creates the app instance for the app
     """
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="build/static/", static_url_path="/static/")
 
     # A ping route to test if the app is working properly
     @app.route("/ping/")
@@ -20,6 +21,9 @@ def create_app():
             'favicon.ico',
             mimetype="image/vnd.microsoft.icon"
         )
+
+    # Register the public routes
+    load_public_routes(app)
 
     # Return the instance of the app
     return app
